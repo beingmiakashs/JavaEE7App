@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view contracts="alternative">
+        <ui:composition template="/main.xhtml">
+            <ui:define name="title">#{bundle['title']}</ui:define>
+
+            <ui:define name="content">
+                <h3>#{bundle['addUserTitle']}</h3>
+
+                <p>
+                    <h:form p:role="role">
+                        <div class="form-group #{!email.valid ? 'has-error' : ''}">
+                            <h:outputLabel p:for="email" styleClass="control-label">
+                                #{bundle['email']} <h:message for="email"/>
+                            </h:outputLabel>
+                            <h:inputText id="email" value="#{addUsersPage.email}" p:placeholder="Email"
+                                         styleClass="form-control" binding="#{email}"/>
+                        </div>
+                        <h:commandButton value="#{bundle['submit']}" action="#{addUsersPage.submit}"
+                                         styleClass="btn btn-primary"/>&nbsp;
+                        <h:commandButton value="#{bundle['cancel']}" action="cancel" immediate="true"
+                                         styleClass="btn btn-default"/>
+                    </h:form>
+                </p>
+            </ui:define>
+        </ui:composition>
+    </f:view>
+</html>

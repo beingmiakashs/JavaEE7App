@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:view contracts="alternative">
+        <ui:composition template="/main.xhtml">
+            <ui:define name="title">#{bundle['title']}</ui:define>
+
+            <ui:define name="content">
+                <h:form><h:commandButton action="addUser" value="#{bundle['addUserTitle']}"
+                                         styleClass="btn btn-primary btn-sm pull-right"/></h:form>
+
+                <h3>#{bundle['users']}</h3>
+
+                <table class="table table-bordered">
+                    <tr>
+                        <th>#{bundle['email']}s</th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <ui:repeat value="#{userService.all}" var="user">
+                        <tr>
+                            <td>#{user.email}</td>
+                            <td>
+                                <h:form><h:commandButton action="#{userController.deleteUser(user.email)}"
+                                                         value="#{bundle['delete']}"
+                                                         styleClass="btn btn-danger btn-xs"/></h:form>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </table>
+
+                <script type="application/javascript">
+                    var url = "ws://" + document.location.host + "#{request.contextPath}/users/updates";
+                    var socket = new WebSocket(url);
+                    socket.onmessage = function (message) {
+                        var user = jQuery.parseJSON(message.data);
+                        console.log("New user added: %O", user)
+                    };
+                </script>
+            </ui:define>
+        </ui:composition>
+    </f:view>
+</html>
